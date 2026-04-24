@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora Reforma Tributária — Mercado Imobiliário</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0d1117;
+  --paper: #f5f0e8;
+  --gold: #c9a84c;
+  --gold-light: #e8d49a;
+  --gold-pale: #f7f0d8;
+  --rust: #b84c2a;
+  --green: #2a7a4b;
+  --green-light: #e8f5ee;
+  --red-light: #fdeee9;
+  --blue: #1a3a5c;
+  --blue-light: #e8f0f8;
+  --mid: #6b6458;
+  --line: #d4c9b0;
+  --shadow: rgba(13,17,23,0.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Lora', Georgia, serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* HEADER */
+.header {
+  background: var(--ink);
+  padding: 48px 40px 40px;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+}
+.header-inner { max-width: 1100px; margin: 0 auto; }
+.badge {
+  display: inline-block;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  padding: 4px 10px;
+  margin-bottom: 20px;
+}
+.header h1 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(28px, 4vw, 48px);
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.header h1 span { color: var(--gold); }
+.header p {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: #8a8070;
+  letter-spacing: 0.03em;
+}
+
+/* MAIN */
+.main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+
+/* SECTION TITLE */
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--ink);
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--line);
+}
+
+/* CARD */
+.card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 28px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 12px var(--shadow);
+}
+
+/* GRID */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+@media (max-width: 700px) {
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+}
+
+/* FORM */
+.field-group { margin-bottom: 20px; }
+.field-label {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 6px;
+}
+.field-hint {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: #aaa;
+  margin-top: 4px;
+}
+input[type="text"], input[type="number"], select {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 2px;
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--paper);
+  outline: none;
+  transition: border-color 0.2s;
+}
+input:focus, select:focus { border-color: var(--gold); background: #fff; }
+select { cursor: pointer; }
+
+/* TOGGLE GRUPO */
+.toggle-group { display: flex; gap: 8px; flex-wrap: wrap; }
+.toggle-btn {
+  padding: 8px 18px;
+  border: 1.5px solid var(--line);
+  border-radius: 2px;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  background: var(--paper);
+  color: var(--mid);
+  transition: all 0.15s;
+}
+.toggle-btn:hover { border-color: var(--gold); color: var(--ink); }
+.toggle-btn.active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--gold);
+}
+
+/* CALC BTN */
+.calc-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--ink);
+  color: var(--gold);
+  border: none;
+  border-radius: 2px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.calc-btn::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.15), transparent);
+  transition: left 0.4s;
+}
+.calc-btn:hover::after { left: 100%; }
+.calc-btn:hover { background: #1a2230; }
+
+/* RESULTS */
+#results { display: none; }
+#results.visible { display: block; animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+/* METRIC BOX */
+.metric-box {
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: 2px;
+  padding: 20px;
+  position: relative;
+}
+.metric-box.highlight {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+.metric-box.green-box { background: var(--green-light); border-color: #b2d9c3; }
+.metric-box.red-box { background: var(--red-light); border-color: #f0c4b4; }
+.metric-box.gold-box { background: var(--gold-pale); border-color: var(--gold-light); }
+.metric-box.blue-box { background: var(--blue-light); border-color: #b4ccdf; }
+
+.metric-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 6px;
+}
+.metric-box.highlight .metric-label { color: var(--gold-light); }
+.metric-value {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(20px, 3vw, 28px);
+  color: var(--ink);
+  line-height: 1;
+}
+.metric-box.highlight .metric-value { color: #fff; }
+.metric-box.green-box .metric-value { color: var(--green); }
+.metric-box.red-box .metric-value { color: var(--rust); }
+.metric-value.negative { color: var(--rust); }
+.metric-pct {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--mid);
+  margin-top: 4px;
+}
+.metric-box.highlight .metric-pct { color: var(--gold); }
+
+/* TABLE */
+.tax-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tax-table th {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mid);
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 2px solid var(--line);
+}
+.tax-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+.tax-table tr:last-child td { border-bottom: none; }
+.tax-table .total-row td {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  background: var(--paper);
+  border-top: 2px solid var(--line);
+}
+.tax-tag {
+  display: inline-block;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 1px;
+}
+.tax-tag.federal { background: #e8f0f8; color: var(--blue); }
+.tax-tag.estadual { background: #e8f5ee; color: var(--green); }
+.tax-tag.renda { background: var(--gold-pale); color: #7a5c1a; }
+.negative-val { color: var(--rust); font-family: 'DM Mono', monospace; }
+.positive-val { color: var(--green); font-family: 'DM Mono', monospace; }
+.neutral-val { font-family: 'DM Mono', monospace; color: var(--ink); }
+
+/* DIVISOR */
+.divider {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 32px 0;
+}
+
+/* PARTICIPANT HEADER */
+.participant-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.participant-icon {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.icon-vendedor { background: var(--red-light); }
+.icon-comprador { background: var(--blue-light); }
+.icon-corretor { background: var(--gold-pale); }
+.participant-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+}
+.participant-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--mid);
+}
+
+/* INSIGHT BOX */
+.insight {
+  background: var(--ink);
+  color: #fff;
+  padding: 20px 24px;
+  border-left: 3px solid var(--gold);
+  margin-top: 16px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.insight strong { color: var(--gold); }
+
+/* CENÁRIOS TABLE */
+.scenario-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.scenario-table th {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+  padding: 8px 12px;
+  border-bottom: 2px solid var(--line);
+  text-align: right;
+}
+.scenario-table th:first-child { text-align: left; }
+.scenario-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  text-align: right;
+  font-family: 'DM Mono', monospace;
+}
+.scenario-table td:first-child { text-align: left; font-family: 'Lora', serif; }
+.scenario-table .best { color: var(--green); font-weight: 500; }
+.scenario-table .worst { color: var(--rust); }
+.scenario-table .highlight-row { background: var(--gold-pale); font-weight: 600; }
+
+/* RESUMO FINAL */
+.final-summary {
+  background: linear-gradient(135deg, var(--ink) 0%, #1a2a3a 100%);
+  border-radius: 2px;
+  padding: 36px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.final-summary::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+}
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+.summary-item { border-left: 2px solid var(--gold); padding-left: 16px; }
+.summary-item-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  margin-bottom: 6px;
+}
+.summary-item-value {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  color: #fff;
+}
+.summary-item-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: #8a8070;
+  margin-top: 2px;
+}
+
+/* YEAR SWITCH */
+.year-tabs { display: flex; gap: 0; margin-bottom: 24px; }
+.year-tab {
+  padding: 10px 24px;
+  border: 1.5px solid var(--line);
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  background: var(--paper);
+  color: var(--mid);
+  transition: all 0.15s;
+}
+.year-tab:first-child { border-radius: 2px 0 0 2px; }
+.year-tab:last-child { border-radius: 0 2px 2px 0; border-left: none; }
+.year-tab.active { background: var(--ink); color: var(--gold); border-color: var(--ink); }
+
+/* PROGRESS BAR */
+.progress-bar { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; margin-top: 8px; }
+.progress-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+.fill-red { background: var(--rust); }
+.fill-green { background: var(--green); }
+.fill-gold { background: var(--gold); }
+.fill-blue { background: var(--blue); }
+
+/* STEP INDICATOR */
+.steps { display: flex; gap: 0; margin-bottom: 32px; position: relative; }
+.steps::before {
+  content: '';
+  position: absolute;
+  top: 18px; left: 20px; right: 20px;
+  height: 1px;
+  background: var(--line);
+  z-index: 0;
+}
+.step {
+  flex: 1;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.step-num {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--line);
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 8px;
+  color: var(--mid);
+}
+.step.active .step-num { background: var(--ink); border-color: var(--ink); color: var(--gold); }
+.step-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+.step.active .step-label { color: var(--ink); font-weight: 500; }
+
+/* ALERT */
+.alert {
+  padding: 12px 16px;
+  border-radius: 2px;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+.alert-warn { background: #fff8e8; border: 1px solid var(--gold-light); color: #7a5c1a; }
+.alert-info { background: var(--blue-light); border: 1px solid #b4ccdf; color: var(--blue); }
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 32px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: #aaa;
+  border-top: 1px solid var(--line);
+}
+
+/* PRINT HIDE */
+@media print {
+  .calc-btn, .steps, .year-tabs { display: none; }
+  body { background: #fff; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="badge">EC 132/2023 · LC 214/2025</div>
+    <h1>Calculadora <span>Reforma Tributária</span><br>Mercado Imobiliário</h1>
+    <p>Simule os impactos fiscais para vendedor, comprador e corretor · CBS (2027) + IBS (2029–2033)</p>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- STEPS -->
+  <div class="steps">
+    <div class="step active"><div class="step-num">1</div><div class="step-label">Parâmetros</div></div>
+    <div class="step active"><div class="step-num">2</div><div class="step-label">Perfis</div></div>
+    <div class="step active"><div class="step-num">3</div><div class="step-label">Resultados</div></div>
+  </div>
+
+  <!-- INPUTS -->
+  <div class="card">
+    <div class="section-label">Passo 1</div>
+    <div class="section-title">Dados da Negociação</div>
+
+    <div class="grid-2">
+      <div class="field-group">
+        <label class="field-label">Valor Líquido Desejado pelo Vendedor (R$)</label>
+        <input type="text" id="valorLiquido" placeholder="Ex: 2.800.000" value="2.800.000" oninput="formatMoney(this)">
+        <div class="field-hint">Quanto o vendedor precisa receber após impostos</div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Taxa de Comissão do Corretor (%)</label>
+        <input type="number" id="comissao" placeholder="6" value="6" min="0" max="20" step="0.1">
+        <div class="field-hint">Percentual sobre o valor de venda (padrão: 6%)</div>
+      </div>
+    </div>
+
+    <div class="grid-3">
+      <div class="field-group">
+        <label class="field-label">Tipo de Imóvel</label>
+        <select id="tipoImovel">
+          <option value="residencial_novo">Residencial Novo</option>
+          <option value="residencial_usado">Residencial Usado</option>
+          <option value="comercial_novo">Comercial Novo</option>
+          <option value="loteamento">Loteamento</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Redutor de Ajuste (R$)</label>
+        <input type="text" id="redutorAjuste" placeholder="Ex: 1.000.000" value="1.000.000" oninput="formatMoney(this)">
+        <div class="field-hint">Custo de aquisição/construção comprovado</div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Redutor Social (R$)</label>
+        <select id="redutorSocial">
+          <option value="100000">R$ 100.000 (Imóvel Popular Novo)</option>
+          <option value="0" selected>R$ 0 (Padrão)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Cenário Temporal</label>
+      <div class="toggle-group">
+        <button class="toggle-btn" id="btn2024" onclick="setCenario('atual')">Hoje (PIS/Cofins)</button>
+        <button class="toggle-btn active" id="btn2027" onclick="setCenario('2027')">2027 — CBS</button>
+        <button class="toggle-btn" id="btn2033" onclick="setCenario('2033')">2033 — CBS + IBS</button>
+        <button class="toggle-btn" id="btnCompar" onclick="setCenario('comparar')">Comparar Todos</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PERFIS -->
+  <div class="card">
+    <div class="section-label">Passo 2</div>
+    <div class="section-title">Perfil dos Participantes</div>
+
+    <div class="grid-3">
+      <div class="field-group">
+        <label class="field-label">Perfil do Vendedor</label>
+        <select id="perfilVendedor">
+          <option value="pj">PJ (Empresa / Incorporadora)</option>
+          <option value="pf_contribuinte">PF Contribuinte (com crédito)</option>
+          <option value="pf_nao_contribuinte">PF Não Contribuinte</option>
+        </select>
+        <div class="field-hint">Determina incidência de CBS/IBS</div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Perfil do Comprador</label>
+        <select id="perfilComprador">
+          <option value="pj">PJ (pode aproveitar crédito)</option>
+          <option value="pf">PF Final (sem aproveitamento)</option>
+        </select>
+        <div class="field-hint">Impacta custo efetivo para o comprador</div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Comissão — Formato</label>
+        <select id="formatoComissao">
+          <option value="gross_up">Gross-up (repasse ao vendedor)</option>
+          <option value="absorvida">Absorvida pela Imobiliária</option>
+        </select>
+        <div class="field-hint">Define quem arca com CBS/IBS sobre comissão</div>
+      </div>
+    </div>
+
+    <button class="calc-btn" onclick="calcular()">▶ Calcular Simulação Completa</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results">
+
+    <!-- YEAR TABS (only shown in comparar) -->
+    <div id="yearTabsContainer" style="display:none">
+      <div class="year-tabs">
+        <div class="year-tab active" onclick="showYear('atual')">Hoje</div>
+        <div class="year-tab" onclick="showYear('2027')">2027</div>
+        <div class="year-tab" onclick="showYear('2033')">2033</div>
+      </div>
+    </div>
+
+    <!-- RESUMO TOPO -->
+    <div class="final-summary" id="resumoTopo">
+      <div class="section-label" style="color:var(--gold-light)">Resumo da Negociação</div>
+      <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:20px;color:#fff;margin-bottom:4px" id="resumoTitulo">—</div>
+      <div style="font-family:'DM Mono',monospace;font-size:12px;color:#8a8070" id="resumoSub">—</div>
+      <div class="summary-grid" id="summaryGrid"><!-- preenchido via JS --></div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 3 PARTICIPANTES -->
+    <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:22px;margin-bottom:24px">
+      Visão por Participante
+    </div>
+
+    <!-- VENDEDOR -->
+    <div class="card" id="cardVendedor">
+      <div class="participant-header">
+        <div class="participant-icon icon-vendedor">🏠</div>
+        <div>
+          <div class="participant-name">Vendedor</div>
+          <div class="participant-sub" id="vendedorPerfil">—</div>
+        </div>
+      </div>
+      <div class="grid-2" id="vendedorMetrics"><!-- JS --></div>
+      <hr class="divider" style="margin:20px 0">
+      <table class="tax-table" id="vendedorTable"><!-- JS --></table>
+      <div class="insight" id="vendedorInsight">—</div>
+    </div>
+
+    <!-- COMPRADOR -->
+    <div class="card" id="cardComprador">
+      <div class="participant-header">
+        <div class="participant-icon icon-comprador">🔑</div>
+        <div>
+          <div class="participant-name">Comprador</div>
+          <div class="participant-sub" id="compradorPerfil">—</div>
+        </div>
+      </div>
+      <div class="grid-2" id="compradorMetrics"><!-- JS --></div>
+      <div class="insight" id="compradorInsight">—</div>
+    </div>
+
+    <!-- CORRETOR -->
+    <div class="card" id="cardCorretor">
+      <div class="participant-header">
+        <div class="participant-icon icon-corretor">📋</div>
+        <div>
+          <div class="participant-name">Corretor / Imobiliária</div>
+          <div class="participant-sub" id="corretorPerfil">—</div>
+        </div>
+      </div>
+      <div class="grid-3" id="corretorMetrics"><!-- JS --></div>
+      <hr class="divider" style="margin:20px 0">
+      <table class="tax-table" id="corretorTable"><!-- JS --></table>
+      <div class="insight" id="corretorInsight">—</div>
+    </div>
+
+    <!-- COMPARAÇÃO CENÁRIOS -->
+    <div class="card" id="cardCenarios">
+      <div class="section-label">Análise Comparativa</div>
+      <div class="section-title">Cenários por Redutor de Ajuste</div>
+      <div class="alert alert-info">💡 Cada linha mostra o impacto de diferentes redutores de ajuste mantendo o mesmo valor líquido para o vendedor.</div>
+      <div style="overflow-x:auto">
+        <table class="scenario-table" id="cenariosTable"><!-- JS --></table>
+      </div>
+    </div>
+
+    <!-- PROJEÇÃO TEMPORAL -->
+    <div class="card" id="cardProjecao">
+      <div class="section-label">Evolução Temporal</div>
+      <div class="section-title">Projeção Hoje → 2027 → 2033</div>
+      <div id="projecaoContent"><!-- JS --></div>
+    </div>
+
+  </div><!-- /results -->
+
+</div><!-- /main -->
+
+<div class="footer">
+  Calculadora Reforma Tributária · Baseada na EC 132/2023 e LC 214/2025<br>
+  CBS: 4,25% (com redutor 50%) · IBS: 9,25% (com redutor 50%) · Alíquotas sujeitas a regulamentação
+</div>
+
+<script>
+// ===== UTILS =====
+function parseMoney(str) {
+  if (typeof str === 'number') return str;
+  return parseFloat(str.replace(/\./g, '').replace(',', '.').replace(/[^\d.-]/g, '')) || 0;
+}
+function formatMoney(input) {
+  let v = input.value.replace(/\D/g, '');
+  if (!v) { input.value = ''; return; }
+  v = parseInt(v).toLocaleString('pt-BR');
+  input.value = v;
+}
+function fmt(n) {
+  if (isNaN(n)) return 'R$ —';
+  const abs = Math.abs(n);
+  const formatted = abs.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  return (n < 0 ? '-R$ ' : 'R$ ') + formatted;
+}
+function fmtPct(n) {
+  return (n >= 0 ? '+' : '') + n.toFixed(2) + '%';
+}
+function pct(part, total) {
+  if (!total) return 0;
+  return (part / total) * 100;
+}
+
+// ===== CENARIO =====
+let cenarioAtivo = '2027';
+function setCenario(c) {
+  cenarioAtivo = c;
+  document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+  const map = { atual:'btn2024', '2027':'btn2027', '2033':'btn2033', comparar:'btnCompar' };
+  document.getElementById(map[c])?.classList.add('active');
+}
+
+// ===== CALCULOS FISCAIS =====
+function calcTaxes(params) {
+  const { valorLiquido, comissaoPct, tipoImovel, redutorAjuste, redutorSocial,
+          perfilVendedor, perfilComprador, formatoComissao, cenario } = params;
+
+  // Alíquotas nominais (cheias, antes do redutor de alíquota 50%)
+  const CBS_FULL = 0.085;      // 8,5% nominal
+  const IBS_FULL = 0.185;      // 18,5% nominal
+  const REDUTOR_ALIQUOTA = 0.5;
+
+  // Alíquotas efetivas com redutor de 50%
+  const CBS_EF = CBS_FULL * REDUTOR_ALIQUOTA;   // 4,25%
+  const IBS_EF = IBS_FULL * REDUTOR_ALIQUOTA;   // 9,25%
+
+  // PIS/Cofins hoje
+  const PIS = 0.0065;
+  const COFINS = 0.03;
+
+  // IR sobre vendedor (lucro presumido)
+  const BASE_IR_PCT = 0.08;
+  const BASE_CSLL_PCT = 0.12;
+  const IRPJ_FX1 = 0.15;
+  const IRPJ_FX2 = 0.10;
+  const CSLL_PCT = 0.09;
+  const LIMITE_FX1 = 240000;
+
+  function calcIR(baseVenda) {
+    const baseIR = baseVenda * BASE_IR_PCT;
+    const baseCSLL = baseVenda * BASE_CSLL_PCT;
+    const irFx1 = baseIR * IRPJ_FX1;
+    const excesso = Math.max(0, baseIR - LIMITE_FX1);
+    const irFx2 = excesso * IRPJ_FX2;
+    const csll = baseCSLL * CSLL_PCT;
+    return { baseIR, baseCSLL, irFx1, irFx2, csll, total: irFx1 + irFx2 + csll };
+  }
+
+  // ===== CENÁRIO ATUAL =====
+  if (cenario === 'atual') {
+    const pisVal = valorLiquido * PIS;
+    const cofinsVal = valorLiquido * COFINS;
+    const totalImpVenda = pisVal + cofinsVal;
+    const baseVenda = valorLiquido + totalImpVenda;
+    const ir = calcIR(baseVenda);
+    const comissaoVal = baseVenda * (comissaoPct / 100);
+    const pisComissao = comissaoVal * PIS;
+    const cofinsComissao = comissaoVal * COFINS;
+    const issComissao = comissaoVal * 0.05;
+    const totalImpComissao = pisComissao + cofinsComissao + issComissao;
+    const comissaoLiq = comissaoVal - totalImpComissao;
+    const irCorretor = calcIR(comissaoVal);
+    const liqCorretor = comissaoLiq - irCorretor.total;
+
+    const vlAnunciar = baseVenda + comissaoVal;
+    const totalImpostos = totalImpVenda + ir.total + totalImpComissao + irCorretor.total;
+    const liqVendedor = valorLiquido - ir.total;
+
+    return {
+      cenario: 'atual',
+      vlAnunciar, baseVenda, valorLiquido,
+      // Vendedor
+      pisVal, cofinsVal, totalImpVenda,
+      ir, liqVendedor,
+      totalImpostosVendedor: totalImpVenda + ir.total,
+      // Comprador
+      custoComprador: vlAnunciar,
+      // Corretor
+      comissaoVal, comissaoLiq, totalImpComissao, pisComissao, cofinsComissao, issComissao,
+      irCorretor, liqCorretor,
+      // Sumário
+      totalImpostos
+    };
+  }
+
+  // ===== CENÁRIO 2027 (só CBS) =====
+  if (cenario === '2027') {
+    // Vendedor PF não contribuinte não paga CBS/IBS
+    const vendedorPaga = perfilVendedor !== 'pf_nao_contribuinte';
+
+    let baseCalculo, cbsVenda, ibsVenda, vlAnunciar;
+
+    if (vendedorPaga) {
+      baseCalculo = Math.max(0, valorLiquido - redutorAjuste - redutorSocial);
+      cbsVenda = baseCalculo * CBS_EF;
+      ibsVenda = 0; // IBS só em 2029
+      vlAnunciar = valorLiquido + cbsVenda;
+    } else {
+      baseCalculo = 0; cbsVenda = 0; ibsVenda = 0;
+      vlAnunciar = valorLiquido;
+    }
+
+    const ir = calcIR(valorLiquido);
+    const comissaoVal = vlAnunciar * (comissaoPct / 100);
+
+    // CBS sobre comissão
+    const cbsComissao = comissaoVal * CBS_EF;
+    let comissaoTotalPaga, cbsRetido;
+
+    if (formatoComissao === 'gross_up') {
+      // CBS repassado ao vendedor via gross-up
+      cbsRetido = comissaoVal * CBS_EF;
+      comissaoTotalPaga = comissaoVal + cbsRetido;
+    } else {
+      cbsRetido = comissaoVal * CBS_EF;
+      comissaoTotalPaga = comissaoVal + cbsRetido;
+    }
+
+    const irCorretor = calcIR(comissaoVal);
+    const liqCorretorSemCredito = comissaoVal - cbsRetido - irCorretor.total;
+    const liqCorretorComCredito = comissaoVal - irCorretor.total; // CBS vira crédito
+
+    const liqVendedor = valorLiquido - ir.total;
+    const totalImpostosVendedor = cbsVenda + ir.total;
+
+    // Comprador: PJ aproveita crédito
+    const custoCompradorPJ = valorLiquido + comissaoTotalPaga; // líquido real
+    const custoCompradorPF = vlAnunciar + comissaoTotalPaga;
+    const custoComprador = perfilComprador === 'pj' ? custoCompradorPJ : custoCompradorPF;
+
+    return {
+      cenario: '2027',
+      vlAnunciar: vlAnunciar + comissaoTotalPaga,
+      vlAnunciarSemComissao: vlAnunciar,
+      baseCalculo, cbsVenda, ibsVenda, valorLiquido,
+      ir, liqVendedor, totalImpostosVendedor,
+      comissaoVal, cbsRetido, comissaoTotalPaga,
+      irCorretor, liqCorretorSemCredito, liqCorretorComCredito,
+      custoComprador, custoCompradorPJ, custoCompradorPF,
+      totalImpostos: cbsVenda + ir.total + cbsRetido + irCorretor.total,
+      vendedorPaga
+    };
+  }
+
+  // ===== CENÁRIO 2033 (CBS + IBS) =====
+  if (cenario === '2033') {
+    const vendedorPaga = perfilVendedor !== 'pf_nao_contribuinte';
+
+    let baseCalculo, cbsVenda, ibsVenda, totalTributos;
+
+    if (vendedorPaga) {
+      baseCalculo = Math.max(0, valorLiquido - redutorAjuste - redutorSocial);
+      cbsVenda = baseCalculo * CBS_EF;
+      ibsVenda = baseCalculo * IBS_EF;
+      totalTributos = cbsVenda + ibsVenda;
+    } else {
+      baseCalculo = 0; cbsVenda = 0; ibsVenda = 0; totalTributos = 0;
+    }
+
+    const vlAnunciar = valorLiquido + totalTributos;
+    const ir = calcIR(valorLiquido);
+    const comissaoVal = vlAnunciar * (comissaoPct / 100);
+    const cbsComissao = comissaoVal * CBS_EF;
+    const ibsComissao = comissaoVal * IBS_EF;
+    const totalImpComissao = cbsComissao + ibsComissao;
+    const comissaoTotalPaga = comissaoVal + totalImpComissao;
+    const irCorretor = calcIR(comissaoVal);
+    const liqCorretorSemCredito = comissaoVal - totalImpComissao - irCorretor.total;
+    const liqCorretorComCredito = comissaoVal - irCorretor.total;
+
+    const liqVendedor = valorLiquido - ir.total;
+    const totalImpostosVendedor = totalTributos + ir.total;
+
+    const custoCompradorPJ = valorLiquido + comissaoTotalPaga;
+    const custoCompradorPF = vlAnunciar + comissaoTotalPaga;
+    const custoComprador = perfilComprador === 'pj' ? custoCompradorPJ : custoCompradorPF;
+
+    return {
+      cenario: '2033',
+      vlAnunciar: vlAnunciar + comissaoTotalPaga,
+      vlAnunciarSemComissao: vlAnunciar,
+      baseCalculo, cbsVenda, ibsVenda, totalTributos, valorLiquido,
+      ir, liqVendedor, totalImpostosVendedor,
+      comissaoVal, cbsComissao, ibsComissao, totalImpComissao, comissaoTotalPaga,
+      irCorretor, liqCorretorSemCredito, liqCorretorComCredito,
+      custoComprador, custoCompradorPJ, custoCompradorPF,
+      totalImpostos: totalTributos + ir.total + totalImpComissao + irCorretor.total,
+      vendedorPaga
+    };
+  }
+}
+
+// ===== RENDER HELPERS =====
+function metricBox(label, value, pctVal, tipo = '') {
+  const cls = tipo ? `metric-box ${tipo}` : 'metric-box';
+  const valClass = value < 0 ? 'negative' : '';
+  return `<div class="${cls}">
+    <div class="metric-label">${label}</div>
+    <div class="metric-value ${valClass}">${fmt(value)}</div>
+    ${pctVal !== undefined ? `<div class="metric-pct">${fmtPct(pctVal)} do valor de venda</div>` : ''}
+  </div>`;
+}
+
+function renderVendedor(r, params) {
+  const pvLiq = params.valorLiquido;
+
+  if (r.cenario === 'atual') {
+    document.getElementById('vendedorPerfil').textContent = 'PJ — Regime Atual (PIS + Cofins + IRPJ + CSLL)';
+    document.getElementById('vendedorMetrics').innerHTML =
+      metricBox('Valor a Anunciar', r.baseVenda, pct(r.baseVenda, pvLiq) - 100, '') +
+      metricBox('Valor Líquido Recebido', r.liqVendedor, pct(r.liqVendedor, pvLiq) - 100, 'green-box');
+
+    document.getElementById('vendedorTable').innerHTML = `
+      <thead><tr><th>Tributo</th><th>Tipo</th><th>Base</th><th>Alíquota</th><th>Valor</th></tr></thead>
+      <tbody>
+        <tr><td>PIS</td><td><span class="tax-tag federal">Federal</span></td><td>${fmt(pvLiq)}</td><td>0,65%</td><td class="negative-val">${fmt(-r.pisVal)}</td></tr>
+        <tr><td>Cofins</td><td><span class="tax-tag federal">Federal</span></td><td>${fmt(pvLiq)}</td><td>3,00%</td><td class="negative-val">${fmt(-r.cofinsVal)}</td></tr>
+        <tr><td>IRPJ Fx1</td><td><span class="tax-tag renda">Renda</span></td><td>${fmt(r.ir.baseIR)}</td><td>15,00%</td><td class="negative-val">${fmt(-r.ir.irFx1)}</td></tr>
+        <tr><td>IRPJ Fx2</td><td><span class="tax-tag renda">Renda</span></td><td>Excesso</td><td>10,00%</td><td class="negative-val">${fmt(-r.ir.irFx2)}</td></tr>
+        <tr><td>CSLL</td><td><span class="tax-tag renda">Renda</span></td><td>${fmt(r.ir.baseCSLL)}</td><td>9,00%</td><td class="negative-val">${fmt(-r.ir.csll)}</td></tr>
+        <tr class="total-row"><td colspan="4">Total de Impostos sobre a Venda</td><td class="negative-val">${fmt(-r.totalImpostosVendedor)}</td></tr>
+      </tbody>`;
+
+    document.getElementById('vendedorInsight').innerHTML = `<strong>Hoje:</strong> A carga tributária sobre a venda (PIS + Cofins + IR) representa ${pct(r.totalImpostosVendedor, pvLiq).toFixed(1)}% do valor desejado. O regime cumulativo limita a recuperação de créditos.`;
+  }
+
+  else if (r.cenario === '2027' || r.cenario === '2033') {
+    const pfNaoContrib = params.perfilVendedor === 'pf_nao_contribuinte';
+    document.getElementById('vendedorPerfil').textContent =
+      pfNaoContrib ? 'PF Não Contribuinte — Sem incidência de CBS/IBS'
+      : params.perfilVendedor === 'pj' ? `PJ — CBS${r.cenario === '2033' ? ' + IBS' : ''} + IRPJ + CSLL`
+      : `PF Contribuinte — CBS${r.cenario === '2033' ? ' + IBS' : ''} + IR`;
+
+    document.getElementById('vendedorMetrics').innerHTML =
+      metricBox('Valor a Anunciar', r.vlAnunciarSemComissao, null, '') +
+      metricBox('Valor Líquido Recebido', r.liqVendedor, null, 'green-box');
+
+    let rows = '';
+    if (!pfNaoContrib) {
+      rows += `<tr><td>CBS (4,25% × base)</td><td><span class="tax-tag federal">Federal</span></td><td>${fmt(r.baseCalculo)}</td><td>4,25%</td><td class="negative-val">${fmt(-r.cbsVenda)}</td></tr>`;
+      if (r.cenario === '2033') {
+        rows += `<tr><td>IBS (9,25% × base)</td><td><span class="tax-tag estadual">Est./Mun.</span></td><td>${fmt(r.baseCalculo)}</td><td>9,25%</td><td class="negative-val">${fmt(-r.ibsVenda)}</td></tr>`;
+      }
+    } else {
+      rows += `<tr><td colspan="5" style="color:var(--green);font-family:'DM Mono',monospace;font-size:12px">✓ PF Não Contribuinte — isento de CBS/IBS na venda</td></tr>`;
+    }
+    rows += `<tr><td>IRPJ Fx1</td><td><span class="tax-tag renda">Renda</span></td><td>${fmt(r.ir.baseIR)}</td><td>15,00%</td><td class="negative-val">${fmt(-r.ir.irFx1)}</td></tr>
+      <tr><td>IRPJ Fx2</td><td><span class="tax-tag renda">Renda</span></td><td>Excesso</td><td>10,00%</td><td class="negative-val">${fmt(-r.ir.irFx2)}</td></tr>
+      <tr><td>CSLL</td><td><span class="tax-tag renda">Renda</span></td><td>${fmt(r.ir.baseCSLL)}</td><td>9,00%</td><td class="negative-val">${fmt(-r.ir.csll)}</td></tr>
+      <tr class="total-row"><td colspan="4">Total de Impostos</td><td class="negative-val">${fmt(-r.totalImpostosVendedor)}</td></tr>`;
+
+    document.getElementById('vendedorTable').innerHTML = `
+      <thead><tr><th>Tributo</th><th>Tipo</th><th>Base de Cálculo</th><th>Alíquota</th><th>Valor</th></tr></thead>
+      <tbody>${rows}</tbody>`;
+
+    const insightPF = pfNaoContrib ? `<strong>Vantagem PF Não Contribuinte:</strong> Sem incidência de CBS/IBS, o imóvel pode ser anunciado por ${fmt(pvLiq)} — até ${fmt(r.totalImpostos * 0.7)} menos que equivalente PJ. Isso vira argumento de venda poderoso.`
+      : `<strong>Atenção:</strong> Redutor de ajuste de ${fmt(params.redutorAjuste)} + redutor social de ${fmt(params.redutorSocial)} resultam em base de cálculo de ${fmt(r.baseCalculo)}. ${r.cenario === '2033' ? `CBS + IBS somam ${fmt(r.totalTributos)} (${pct(r.totalTributos, pvLiq).toFixed(1)}% do líquido desejado).` : `CBS sobre a base soma ${fmt(r.cbsVenda)} (${pct(r.cbsVenda, pvLiq).toFixed(1)}% do líquido desejado).`}`;
+
+    document.getElementById('vendedorInsight').innerHTML = insightPF;
+  }
+}
+
+function renderComprador(r, params) {
+  const pfNaoContrib = params.perfilVendedor === 'pf_nao_contribuinte';
+
+  if (r.cenario === 'atual') {
+    document.getElementById('compradorPerfil').textContent = 'Regime Atual — Custo único';
+    document.getElementById('compradorMetrics').innerHTML =
+      metricBox('Custo Total (com comissão)', r.vlAnunciar, null, 'blue-box') +
+      metricBox('Tributos no Preço', r.totalImpVenda, pct(r.totalImpVenda, r.vlAnunciar), 'red-box');
+    document.getElementById('compradorInsight').innerHTML = `<strong>Hoje:</strong> O comprador tem um único preço. Os tributos do vendedor já estão embutidos no valor anunciado, mas não são transparentes.`;
+  } else {
+    document.getElementById('compradorPerfil').textContent = params.perfilComprador === 'pj' ? 'PJ — Aproveitará crédito de CBS/IBS' : 'PF Final — Sem aproveitamento de crédito';
+
+    const gap = r.custoCompradorPF - r.custoCompradorPJ;
+
+    document.getElementById('compradorMetrics').innerHTML =
+      metricBox('Custo p/ Comprador PJ', r.custoCompradorPJ, null, 'green-box') +
+      metricBox('Custo p/ Comprador PF', r.custoCompradorPF, null, 'red-box');
+
+    document.getElementById('compradorInsight').innerHTML =
+      `<strong>Diferença PF vs PJ:</strong> O comprador PF paga ${fmt(gap)} a mais que o PJ. 
+      ${pfNaoContrib ? `<br><br><strong>Vendedor PF Não Contribuinte:</strong> Sem CBS/IBS na operação, o comprador PF economiza ${fmt(gap)} vs cenário com vendedor PJ contribuinte.` : `<br><br>O comprador PJ aproveita os créditos de CBS/IBS recolhidos, zerando o custo líquido do tributo.`}`;
+  }
+}
+
+function renderCorretor(r, params) {
+  if (r.cenario === 'atual') {
+    document.getElementById('corretorPerfil').textContent = 'Regime Atual — PIS + Cofins + ISS';
+    document.getElementById('corretorMetrics').innerHTML =
+      metricBox('Comissão Bruta', r.comissaoVal, pct(r.comissaoVal, r.baseVenda), 'gold-box') +
+      metricBox('Impostos sobre Comissão', -r.totalImpComissao, -pct(r.totalImpComissao, r.comissaoVal), 'red-box') +
+      metricBox('Líquido após Impostos', r.liqCorretor, pct(r.liqCorretor, r.comissaoVal), 'green-box');
+
+    document.getElementById('corretorTable').innerHTML = `
+      <thead><tr><th>Tributo</th><th>Tipo</th><th>Alíquota</th><th>Valor</th></tr></thead>
+      <tbody>
+        <tr><td>PIS</td><td><span class="tax-tag federal">Federal</span></td><td>0,65%</td><td class="negative-val">${fmt(-r.pisComissao)}</td></tr>
+        <tr><td>Cofins</td><td><span class="tax-tag federal">Federal</span></td><td>3,00%</td><td class="negative-val">${fmt(-r.cofinsComissao)}</td></tr>
+        <tr><td>ISS</td><td><span class="tax-tag estadual">Municipal</span></td><td>5,00%</td><td class="negative-val">${fmt(-r.issComissao)}</td></tr>
+        <tr><td>IRPJ + CSLL</td><td><span class="tax-tag renda">Renda</span></td><td>~24%</td><td class="negative-val">${fmt(-r.irCorretor.total)}</td></tr>
+        <tr class="total-row"><td colspan="3">Total de Impostos</td><td class="negative-val">${fmt(-(r.totalImpComissao + r.irCorretor.total))}</td></tr>
+      </tbody>`;
+    document.getElementById('corretorInsight').innerHTML = `<strong>Hoje:</strong> A imobiliária recolhe PIS (0,65%) + Cofins (3%) + ISS (5%) sobre a comissão. Não há aproveitamento de créditos no regime cumulativo atual.`;
+  } else {
+    const tag = r.cenario === '2027' ? 'CBS' : 'CBS + IBS';
+    document.getElementById('corretorPerfil').textContent = `Regime ${r.cenario} — ${tag} sobre comissão`;
+    document.getElementById('corretorMetrics').innerHTML =
+      metricBox('Comissão Bruta', r.comissaoVal, pct(r.comissaoVal, r.vlAnunciarSemComissao), 'gold-box') +
+      metricBox('CBS/IBS sobre Comissão', -(r.totalImpComissao || r.cbsRetido), null, 'red-box') +
+      metricBox('Líquido (com créditos)', r.liqCorretorComCredito, pct(r.liqCorretorComCredito, r.comissaoVal), 'green-box');
+
+    const rows2027 = `<tr><td>CBS sobre Comissão</td><td><span class="tax-tag federal">Federal</span></td><td>4,25%</td><td class="negative-val">${fmt(-(r.cbsRetido || r.cbsComissao || 0))}</td></tr>`;
+    const rows2033 = r.cenario === '2033' ? `
+      <tr><td>CBS sobre Comissão</td><td><span class="tax-tag federal">Federal</span></td><td>4,25%</td><td class="negative-val">${fmt(-r.cbsComissao)}</td></tr>
+      <tr><td>IBS sobre Comissão</td><td><span class="tax-tag estadual">Est./Mun.</span></td><td>9,25%</td><td class="negative-val">${fmt(-r.ibsComissao)}</td></tr>` : rows2027;
+
+    document.getElementById('corretorTable').innerHTML = `
+      <thead><tr><th>Tributo</th><th>Tipo</th><th>Alíquota</th><th>Valor</th></tr></thead>
+      <tbody>
+        ${rows2033}
+        <tr><td>IRPJ Fx1</td><td><span class="tax-tag renda">Renda</span></td><td>15,00%</td><td class="negative-val">${fmt(-r.irCorretor.irFx1)}</td></tr>
+        <tr><td>CSLL</td><td><span class="tax-tag renda">Renda</span></td><td>9,00%</td><td class="negative-val">${fmt(-r.irCorretor.csll)}</td></tr>
+        <tr class="total-row"><td colspan="3">Líquido sem créditos</td><td class="negative-val">${fmt(r.liqCorretorSemCredito)}</td></tr>
+        <tr class="total-row" style="background:var(--green-light)"><td colspan="3">Líquido com créditos CBS/IBS</td><td class="positive-val">${fmt(r.liqCorretorComCredito)}</td></tr>
+      </tbody>`;
+
+    const ganho = r.liqCorretorComCredito - r.liqCorretorSemCredito;
+    document.getElementById('corretorInsight').innerHTML =
+      `<strong>Não-cumulatividade:</strong> Aproveitando os créditos de ${tag}, a imobiliária recupera ${fmt(ganho)} vs. não usar os créditos. 
+      ${params.formatoComissao === 'gross_up' ? `<br><br><strong>Gross-up:</strong> Os tributos sobre a comissão são repassados ao vendedor (comissão total paga: ${fmt(r.comissaoTotalPaga)}).` : `<br><br><strong>Absorção:</strong> A imobiliária absorve os tributos sobre a comissão — impacta margem, mas simplifica negociação.`}`;
+  }
+}
+
+function renderCenarios(params) {
+  const redutores = [250000, 500000, 1000000, 1500000, 2000000];
+  const vliq = params.valorLiquido;
+
+  let headerCenario = `<thead><tr>
+    <th style="text-align:left">Cenário</th>
+    <th>Redutor Ajuste</th>
+    <th>Valor a Anunciar</th>
+    <th>CBS/IBS Total</th>
+    <th>Dif. vs Base</th>
+    <th>Custo PJ</th>
+    <th>Custo PF</th>
+    <th>Gap PF-PJ</th>
+  </tr></thead><tbody>`;
+
+  let rows = '';
+  const cenParaTabela = params.cenario === 'atual' ? '2033' : params.cenario;
+  const base = calcTaxes({ ...params, redutorAjuste: 1000000, cenario: cenParaTabela });
+
+  redutores.forEach((red, i) => {
+    const r = calcTaxes({ ...params, redutorAjuste: red, cenario: cenParaTabela });
+    const diff = base.totalImpostosVendedor - r.totalImpostosVendedor;
+    const isBase = red === 1000000;
+    const gap = r.custoCompradorPF - r.custoCompradorPJ;
+
+    rows += `<tr class="${isBase ? 'highlight-row' : ''}">
+      <td>${i + 1}${isBase ? ' ★ Base' : ''}</td>
+      <td>${fmt(red)}</td>
+      <td>${fmt(r.vlAnunciarSemComissao)}</td>
+      <td class="negative-val">${fmt(-r.totalImpostosVendedor)}</td>
+      <td class="${diff > 0 ? 'best' : diff < 0 ? 'worst' : ''}">${diff === 0 ? '—' : fmt(diff)}</td>
+      <td>${fmt(r.custoCompradorPJ)}</td>
+      <td>${fmt(r.custoCompradorPF)}</td>
+      <td class="worst">${fmt(gap)}</td>
+    </tr>`;
+  });
+
+  document.getElementById('cenariosTable').innerHTML = headerCenario + rows + '</tbody>';
+}
+
+function renderProjecao(params) {
+  const cenAtual = calcTaxes({ ...params, cenario: 'atual' });
+  const cen2027 = calcTaxes({ ...params, cenario: '2027' });
+  const cen2033 = calcTaxes({ ...params, cenario: '2033' });
+
+  const items = [
+    { label: 'Valor a Anunciar', a: cenAtual.baseVenda, b: cen2027.vlAnunciarSemComissao, c: cen2033.vlAnunciarSemComissao },
+    { label: 'Tributos sobre Venda', a: cenAtual.totalImpostosVendedor, b: cen2027.totalImpostosVendedor, c: cen2033.totalImpostosVendedor },
+    { label: 'Líquido Vendedor', a: cenAtual.liqVendedor, b: cen2027.liqVendedor, c: cen2033.liqVendedor },
+    { label: 'Custo Comprador PF', a: cenAtual.vlAnunciar, b: cen2027.custoCompradorPF, c: cen2033.custoCompradorPF },
+    { label: 'Comissão Líquida Corretor', a: cenAtual.liqCorretor, b: cen2027.liqCorretorComCredito, c: cen2033.liqCorretorComCredito },
+  ];
+
+  let html = `<div style="overflow-x:auto"><table class="scenario-table">
+    <thead><tr><th style="text-align:left">Item</th><th>Hoje</th><th>2027</th><th>2033</th><th>Δ Hoje→2033</th></tr></thead>
+    <tbody>`;
+
+  items.forEach(item => {
+    const delta = item.c - item.a;
+    const dClass = delta > 0 ? 'worst' : 'best';
+    html += `<tr>
+      <td>${item.label}</td>
+      <td>${fmt(item.a)}</td>
+      <td>${fmt(item.b)}</td>
+      <td>${fmt(item.c)}</td>
+      <td class="${dClass}">${fmt(delta)}</td>
+    </tr>`;
+  });
+
+  html += `</tbody></table></div>`;
+
+  // Alíquotas comparadas
+  html += `<div style="margin-top:24px">
+    <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);margin-bottom:12px">Alíquota Combinada Efetiva</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap">
+      ${[['Hoje (PIS+Cofins)', 3.65, 'fill-green'], ['2027 (CBS)', 4.25, 'fill-gold'], ['2033 (CBS+IBS)', 13.5, 'fill-red']].map(([label, val, cls]) => `
+        <div style="flex:1;min-width:140px">
+          <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--mid);margin-bottom:4px">${label}</div>
+          <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:20px;color:var(--ink)">${val}%</div>
+          <div class="progress-bar"><div class="progress-fill ${cls}" style="width:${(val/14)*100}%"></div></div>
+        </div>`).join('')}
+    </div>
+  </div>`;
+
+  document.getElementById('projecaoContent').innerHTML = html;
+}
+
+// ===== MAIN CALC =====
+function calcular() {
+  const valorLiquido = parseMoney(document.getElementById('valorLiquido').value);
+  const comissaoPct = parseFloat(document.getElementById('comissao').value) || 6;
+  const tipoImovel = document.getElementById('tipoImovel').value;
+  const redutorAjuste = parseMoney(document.getElementById('redutorAjuste').value);
+  const redutorSocial = parseInt(document.getElementById('redutorSocial').value) || 0;
+  const perfilVendedor = document.getElementById('perfilVendedor').value;
+  const perfilComprador = document.getElementById('perfilComprador').value;
+  const formatoComissao = document.getElementById('formatoComissao').value;
+
+  if (!valorLiquido || valorLiquido < 1000) {
+    alert('Informe um valor líquido válido para o vendedor.');
+    return;
+  }
+
+  const params = { valorLiquido, comissaoPct, tipoImovel, redutorAjuste, redutorSocial,
+                   perfilVendedor, perfilComprador, formatoComissao, cenario: cenarioAtivo };
+
+  const cenParaRender = cenarioAtivo === 'comparar' ? '2033' : cenarioAtivo;
+  const r = calcTaxes({ ...params, cenario: cenParaRender });
+
+  // RESUMO TOPO
+  const cenLabel = { atual: 'Regime Atual', '2027': 'Cenário 2027 — CBS', '2033': 'Cenário 2033 — CBS + IBS', comparar: 'Comparação Completa' };
+  document.getElementById('resumoTitulo').textContent = `${cenLabel[cenarioAtivo]} · ${tipoImovel.replace('_', ' ').toUpperCase()}`;
+  document.getElementById('resumoSub').textContent =
+    `Líquido vendedor: ${fmt(valorLiquido)} · Comissão: ${comissaoPct}% · Redutor: ${fmt(redutorAjuste)}`;
+
+  const summaryItems = [
+    { label: 'Valor a Anunciar', value: r.vlAnunciar || r.baseVenda },
+    { label: 'Líquido Vendedor', value: r.liqVendedor },
+    { label: 'Comissão Corretor', value: r.comissaoVal },
+    { label: 'Custo Comprador', value: r.custoComprador || r.vlAnunciar },
+  ];
+
+  document.getElementById('summaryGrid').innerHTML = summaryItems.map(item => `
+    <div class="summary-item">
+      <div class="summary-item-label">${item.label}</div>
+      <div class="summary-item-value">${fmt(item.value)}</div>
+      <div class="summary-item-sub">${fmtPct(pct(item.value, valorLiquido) - 100)} vs líquido base</div>
+    </div>`).join('');
+
+  renderVendedor(r, params);
+  renderComprador(r, params);
+  renderCorretor(r, params);
+  renderCenarios(params);
+  renderProjecao(params);
+
+  // Mostra resultados
+  const results = document.getElementById('results');
+  results.classList.add('visible');
+
+  // Scroll suave
+  setTimeout(() => results.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+}
+
+// INIT
+window.onload = () => {
+  document.querySelectorAll('input[type="text"]').forEach(inp => formatMoney(inp));
+  setCenario('2027');
+};
+</script>
+</body>
+</html>
